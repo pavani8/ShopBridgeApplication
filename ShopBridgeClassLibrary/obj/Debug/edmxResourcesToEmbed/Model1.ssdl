@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ShopBridgeDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Brand">
+    <Key>
+      <PropertyRef Name="brandId" />
+    </Key>
+    <Property Name="brandId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="brandName" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="createdAt" Type="datetime" />
+    <Property Name="createdBy" Type="varchar" MaxLength="20" />
+    <Property Name="modifiedAt" Type="datetime" />
+    <Property Name="modifiedBy" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="categoryId" />
+    </Key>
+    <Property Name="categoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="categoryName" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="createdAt" Type="datetime" />
+    <Property Name="createdBy" Type="varchar" MaxLength="20" />
+    <Property Name="modifiedAt" Type="datetime" />
+    <Property Name="modifiedBy" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Packing">
+    <Key>
+      <PropertyRef Name="packingId" />
+    </Key>
+    <Property Name="packingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="packingName" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="createdAt" Type="datetime" />
+    <Property Name="createdBy" Type="varchar" MaxLength="20" />
+    <Property Name="modifiedAt" Type="datetime" />
+    <Property Name="modifiedBy" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="productId" />
+    </Key>
+    <Property Name="productId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="image" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="MRP" Type="int" Nullable="false" />
+    <Property Name="categoryId" Type="int" />
+    <Property Name="brandId" Type="int" />
+    <Property Name="subCategoryId" Type="int" />
+    <Property Name="packingId" Type="int" />
+    <Property Name="description" Type="varchar" MaxLength="200" />
+    <Property Name="status" Type="varchar" MaxLength="20" />
+    <Property Name="createdAt" Type="datetime" />
+    <Property Name="createdBy" Type="varchar" MaxLength="20" />
+    <Property Name="modifiedAt" Type="datetime" />
+    <Property Name="modifiedBy" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Stock">
+    <Key>
+      <PropertyRef Name="stockId" />
+    </Key>
+    <Property Name="stockId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="productId" Type="int" />
+    <Property Name="quantity" Type="int" />
+    <Property Name="batchCode" Type="varchar" MaxLength="20" />
+    <Property Name="purchasePrice" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="sellingPrice" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="createdAt" Type="datetime" />
+    <Property Name="createdBy" Type="varchar" MaxLength="20" />
+    <Property Name="modifiedAt" Type="datetime" />
+    <Property Name="modifiedBy" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="SubCategory">
+    <Key>
+      <PropertyRef Name="subCategoryId" />
+    </Key>
+    <Property Name="subCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="subCategoryName" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="createdAt" Type="datetime" />
+    <Property Name="createdBy" Type="varchar" MaxLength="20" />
+    <Property Name="modifiedAt" Type="datetime" />
+    <Property Name="modifiedBy" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <Association Name="FK__Product__brandId__5441852A">
+    <End Role="Brand" Type="Self.Brand" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brand">
+        <PropertyRef Name="brandId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="brandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Product__categor__5165187F">
+    <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="categoryId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="categoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Product__packing__534D60F1">
+    <End Role="Packing" Type="Self.Packing" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Packing">
+        <PropertyRef Name="packingId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="packingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Product__subCate__52593CB8">
+    <End Role="SubCategory" Type="Self.SubCategory" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SubCategory">
+        <PropertyRef Name="subCategoryId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="subCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Stock__modifiedB__571DF1D5">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+    <End Role="Stock" Type="Self.Stock" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="productId" />
+      </Principal>
+      <Dependent Role="Stock">
+        <PropertyRef Name="productId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ShopBridgeDbModelStoreContainer">
+    <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Packing" EntityType="Self.Packing" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Stock" EntityType="Self.Stock" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SubCategory" EntityType="Self.SubCategory" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Product__brandId__5441852A" Association="Self.FK__Product__brandId__5441852A">
+      <End Role="Brand" EntitySet="Brand" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Product__categor__5165187F" Association="Self.FK__Product__categor__5165187F">
+      <End Role="Category" EntitySet="Category" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Product__packing__534D60F1" Association="Self.FK__Product__packing__534D60F1">
+      <End Role="Packing" EntitySet="Packing" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Product__subCate__52593CB8" Association="Self.FK__Product__subCate__52593CB8">
+      <End Role="SubCategory" EntitySet="SubCategory" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Stock__modifiedB__571DF1D5" Association="Self.FK__Stock__modifiedB__571DF1D5">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="Stock" EntitySet="Stock" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

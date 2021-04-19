@@ -1,0 +1,11 @@
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridgeClassLibrary\bin\Debug\ShopBridgeClassLibrary.dll.config
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridgeClassLibrary\bin\Debug\ShopBridgeClassLibrary.dll
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridgeClassLibrary\bin\Debug\ShopBridgeClassLibrary.pdb
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridgeClassLibrary\bin\Debug\EntityFramework.dll
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridgeClassLibrary\bin\Debug\EntityFramework.SqlServer.dll
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridgeClassLibrary\bin\Debug\EntityFramework.xml
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridgeClassLibrary\bin\Debug\EntityFramework.SqlServer.xml
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridgeClassLibrary\obj\Debug\ShopBridgeClassLibrary.csproj.CoreCompileInputs.cache
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridgeClassLibrary\obj\Debug\ShopBridgeClassLibrary.csproj.CopyComplete
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridgeClassLibrary\obj\Debug\ShopBridgeClassLibrary.dll
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridgeClassLibrary\obj\Debug\ShopBridgeClassLibrary.pdb
