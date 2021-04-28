@@ -30,17 +30,23 @@ namespace ShopBridgeClassLibrary
 
         }
 
-        public async Task DeletePacking(int id)
+        public async Task<int> DeletePacking(int id)
         {
             try
-            {
-                List<Product> productsList = new List<Product>();
-                productsList = productOp.getAllProductsByPacking(id);
-                sde.Products.RemoveRange(productsList);
-
+            {                
                 Packing pack = await getPackingById(id);
-                sde.Packings.Remove(pack);
-                sde.SaveChanges();
+                if (pack != null)
+                {
+                    sde.Products.RemoveRange(pack.Products);
+                    await sde.SaveChangesAsync();
+                    sde.Packings.Remove(pack);
+                    sde.SaveChanges();
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (Exception ex)
             {

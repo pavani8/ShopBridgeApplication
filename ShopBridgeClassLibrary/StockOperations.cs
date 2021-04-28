@@ -30,13 +30,21 @@ namespace ShopBridgeClassLibrary
         }
 
         // this method deletes the stock with matching stock id from database.
-        public async Task DeleteStock(int stockId)
+        public async Task<int> DeleteStock(int stockId)
         {
             try
-            {
+            {               
                 Stock stock = await getStockByStockId(stockId);
-                sde.Stocks.Remove(stock);
-                sde.SaveChanges();
+                if (stock != null)
+                {
+                    sde.Stocks.Remove(stock);
+                    sde.SaveChanges();
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (Exception ex)
             {

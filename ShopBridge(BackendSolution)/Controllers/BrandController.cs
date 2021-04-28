@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using ShopBridgeClassLibrary;
 
@@ -16,27 +15,34 @@ namespace ShopBridge_BackendSolution_.Controllers
         BrandOperations brandOp = new BrandOperations();
 
         // GET: api/Brand
+        [Route("api/Brand/GetAll")]
         public async Task<HttpResponseMessage> GetAll()
         {
             List<Brand> result = await brandOp.getAllBrands();
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
+
         // GET: api/Brand/5
+        [Route("api/Brand/GetBrandById/{Id}")]
         public async Task<HttpResponseMessage> GetBrand(int Id)
         {
-            Brand brand = await brandOp.getBrandById(Id);
-            if (brand != null)
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, brand);
+                Brand brand = await brandOp.getBrandById(Id);
+                if (brand != null)
+                    return Request.CreateResponse(HttpStatusCode.OK, brand);
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Brand with Id = " + Id.ToString() + " not found");
 
             }
-            else
+            catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Brand with Id = " + Id.ToString() + " not found");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
 
         // POST: api/Brand
+        [Route("api/Brand/AddBrand")]
         public async Task<HttpResponseMessage> AddBrand([FromBody] Brand brand)
         {
             try
@@ -51,8 +57,10 @@ namespace ShopBridge_BackendSolution_.Controllers
         }
 
     // PUT: api/Brand/5
-    public async Task<HttpResponseMessage> Put(int id, Brand brand)
-    {
+        [HttpPut]
+        [Route("api/Brand/UpdateBrand/{id}")]
+        public async Task<HttpResponseMessage> UpdateBrand(int id, Brand brand)
+        {
             try
             {
                 Brand _brand = await brandOp.getBrandById(id);
@@ -73,28 +81,26 @@ namespace ShopBridge_BackendSolution_.Controllers
 
         }
 
-    // DELETE: api/Brand/5
-    public async Task<HttpResponseMessage> DeleteBrand(int id)
-    {
+        // DELETE: api/Brand/5
+        [Route("api/Brand/DeleteBrand/{id}")]
+        public async Task<HttpResponseMessage> DeleteBrand(int id)
+        {
             try
-            {
-                Brand brand = await brandOp.getBrandById(id);
-                if (brand == null)
+            {             
+                int response = await brandOp.DeleteBrand(id);
+                if (response == 0)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Brand with Id = " + id.ToString() + " not found to delete");
                 }
                 else
                 {
-                    await brandOp.DeleteBrand(id);
-                    return Request.CreateResponse(HttpStatusCode.OK, brand);
+                    return Request.CreateResponse(HttpStatusCode.OK, "Brand with Id = " + id.ToString() + " is deleted");
                 }
             }
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
-
-
         }
     }
 }

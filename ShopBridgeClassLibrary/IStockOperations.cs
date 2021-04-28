@@ -13,6 +13,6 @@ namespace ShopBridgeClassLibrary
         Task<List<Stock>> getAllStocksByProduct(int productId);
         Task<Stock> getStockByStockId(int stockId);
         Task UpdateStock(int id, Stock stock);
-        Task DeleteStock(int stockId);
+        Task<int> DeleteStock(int stockId);
     }
 }

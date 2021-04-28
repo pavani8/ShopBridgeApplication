@@ -12,6 +12,6 @@ namespace ShopBridgeClassLibrary
         Task<List<Packing>> getAllPackings();
         Task<Packing> getPackingById(int id);
         Task UpdatePacking(int id, Packing pack);
-        Task DeletePacking(int id);
+        Task<int> DeletePacking(int id);
     }
 }

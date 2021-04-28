@@ -29,16 +29,23 @@ namespace ShopBridgeClassLibrary
             }
         }
 
-        public async Task DeleteCategory(int id)
+        public async Task<int> DeleteCategory(int id)
         {
             try
-            {
-                List<Product> productsList = new List<Product>();
-                productsList = productOp.getAllProductsByCategory(id);
-                sde.Products.RemoveRange(productsList);
-                Category cat =  await getCategoryById(id); 
-                sde.Categories.Remove(cat);
-                await sde.SaveChangesAsync();
+            {         
+                Category cat = await getCategoryById(id);
+                if (cat != null)
+                {
+                    sde.Products.RemoveRange(cat.Products);
+                    await sde.SaveChangesAsync();
+                    sde.Categories.Remove(cat);
+                    sde.SaveChanges();
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (Exception ex)
             {

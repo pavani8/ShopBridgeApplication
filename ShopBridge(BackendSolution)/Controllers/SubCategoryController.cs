@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using ShopBridgeClassLibrary;
 
@@ -17,32 +16,39 @@ namespace ShopBridge_BackendSolution_.Controllers
         
         SubCategoryOperations subCatOp = new SubCategoryOperations();
         // GET: api/SubCategory
+        [Route("api/SubCategory/GetAll")]
         public async Task<HttpResponseMessage> GetAll()
         {
             List<SubCategory> subcategories = await subCatOp.getAllSubCategories();
             return Request.CreateResponse(HttpStatusCode.OK, subcategories);
         }
         // GET: api/SubCategory/5
+        [Route("api/SubCategory/GetSubCategoryById/{Id}")]
         public async Task<HttpResponseMessage> GetSubCategory(int Id)
         {
-            SubCategory subCategory = await subCatOp.getSubCategoryById(Id);
-            if (subCategory != null)
+            
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, subCategory);
+                SubCategory subCategory = await subCatOp.getSubCategoryById(Id);
+                if (subCategory != null)
+                    return Request.CreateResponse(HttpStatusCode.OK, subCategory);
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "SubCategory with Id = " + Id.ToString() + " not found");
 
             }
-            else
+            catch(Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "SubCategory with Id = " + Id.ToString() + " not found");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
         // POST: api/SubCategory
+        // [HttpPost]
+        [Route("api/SubCategory/AddSubCategory")]
         public async Task<HttpResponseMessage> AddSubCategory([FromBody] SubCategory subCategory)
         {
             try
             {
                 await subCatOp.AddSubCategory(subCategory);
-                Console.WriteLine(subCategory);
                 return Request.CreateResponse(HttpStatusCode.Created, subCategory);
             }
             catch (Exception ex)
@@ -51,7 +57,9 @@ namespace ShopBridge_BackendSolution_.Controllers
             }
         }
         // PUT: api/SubCategory/5
-        public async Task<HttpResponseMessage> Put(int id, SubCategory subCategory)
+        [HttpPut]
+        [Route("api/SubCategory/UpdateSubCategory/{Id}")]
+        public async Task<HttpResponseMessage> UpdateSubCategory(int id, [FromBody] SubCategory subCategory)
         {
             try
             {
@@ -74,19 +82,19 @@ namespace ShopBridge_BackendSolution_.Controllers
         }
 
         // DELETE: api/SubCategory/5
+        [Route("api/SubCategory/DeleteSubCategory/{Id}")]
         public async Task<HttpResponseMessage> DeleteSubCategory(int id)
         {
             try
             {
-                SubCategory subcat = await subCatOp.getSubCategoryById(id);
-                if (subcat == null)
+                int response = await subCatOp.DeleteSubCategory(id);
+                if (response == 0)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "SubCategory with Id = " + id.ToString() + " not found to delete");
                 }
                 else
-                {
-                    await subCatOp.DeleteSubCategory(id);
-                    return Request.CreateResponse(HttpStatusCode.OK, subcat);
+                {                  
+                    return Request.CreateResponse(HttpStatusCode.OK, "SubCategory with Id = " + id.ToString() + " is deleted");
                 }
             }
             catch (Exception ex)

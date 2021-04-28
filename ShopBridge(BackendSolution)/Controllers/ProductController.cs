@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using ShopBridgeClassLibrary;
 
@@ -17,50 +16,68 @@ namespace ShopBridge_BackendSolution_.Controllers
         ProductOperations productOp = new ProductOperations();
         // GET: api/Product
         //[HttpGet]
+        [Route("api/Product/GetAll")]
         public async Task<HttpResponseMessage> GetAll()
         {
             List<Product> products = await productOp.getAllProducts();
             return Request.CreateResponse(HttpStatusCode.OK, products);
         }
+
+        [Route("api/Product/GetProductsByCategory/{categoryId}")]
         public async Task<HttpResponseMessage> GetAllProductsByCategory(int categoryId)
         {
             List<Product> products = await productOp.getAllProductsByCategory(categoryId);
             return Request.CreateResponse(HttpStatusCode.OK, products);
         }
 
+        [Route("api/Product/GetProductsBySubCategory/{subCategoryId}")]
         public async Task<HttpResponseMessage> GetAllProductsBySubCategory(int subCategoryId)
         {
             List<Product> products = await productOp.getAllProductsBySubCategory(subCategoryId);
             return Request.CreateResponse(HttpStatusCode.OK, products);
         }
 
+
+
+        [Route("api/Product/GetProductsByBrand/{brandId}")]
         public async Task<HttpResponseMessage> GetAllProductsByBrand(int brandId)
         {
             List<Product> products = await productOp.getAllProductsByBrand(brandId);
             return Request.CreateResponse(HttpStatusCode.OK, products);
         }
 
+
+        [Route("api/Product/GetProductsByPacking/{packId}")]
         public async Task<HttpResponseMessage> GetAllProductsByPacking(int packId)
         {
             List<Product> products = await productOp.getAllProductsByPacking(packId);
             return Request.CreateResponse(HttpStatusCode.OK, products);
         }
 
-        // GET: api/Product/5    
+        // GET: api/Product/5 
+        [Route("api/Product/GetProductById/{productId}")]
         public async Task<HttpResponseMessage> GetProduct(int productId)
         {
-            Product product = await productOp.getProductById(productId);
-            if (product != null)
+            
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, product);
+                Product product = await productOp.getProductById(productId);
+                if (product != null)
+                    return Request.CreateResponse(HttpStatusCode.OK, product);
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Product with Id = " + productId.ToString() + " not found");
 
             }
-            else
+            catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Product with Id = " + productId.ToString() + " not found");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
+
+
         // search api to search for a product in product list
+
+        [Route("api/Product/SearchProduct/{search_str}")]
         public async Task<HttpResponseMessage> Search_Product(string search_str)
         {
             try
@@ -75,6 +92,7 @@ namespace ShopBridge_BackendSolution_.Controllers
         }
 
         // POST: api/Product
+        [Route("api/Product/AddProduct")]
         public async Task<HttpResponseMessage> AddProduct([FromBody] Product product)
         {
             try
@@ -89,7 +107,9 @@ namespace ShopBridge_BackendSolution_.Controllers
         }
      
         // PUT: api/Product/5
-        public async Task<HttpResponseMessage> Put(int productId, Product product)
+        [HttpPut]
+        [Route("api/Product/UpdateProduct/{productId}")]
+        public async Task<HttpResponseMessage> UpdateProduct(int productId, Product product)
         {
             try
             {
@@ -113,19 +133,20 @@ namespace ShopBridge_BackendSolution_.Controllers
         }
 
         // DELETE: api/Product/5
+
+        [Route("api/Product/DeleteProduct/{productId}")]
         public async Task<HttpResponseMessage> DeleteProduct(int productId)
         {
             try
-            {
-                Product product = await productOp.getProductById(productId);
-                if (product == null)
+            {             
+                int response = await productOp.DeleteProduct(productId);
+                if (response == 0)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Category with Id = " + productId.ToString() + " not found to delete");
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Product with Id = " + productId.ToString() + " not found to delete");
                 }
                 else
                 {
-                    await productOp.DeleteProduct(productId);
-                    return Request.CreateResponse(HttpStatusCode.OK, product);
+                    return Request.CreateResponse(HttpStatusCode.OK, "Product with Id = " + productId.ToString() + " is deleted");
                 }
             }
             catch (Exception ex)

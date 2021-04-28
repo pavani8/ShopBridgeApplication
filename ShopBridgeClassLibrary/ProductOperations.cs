@@ -32,17 +32,24 @@ namespace ShopBridgeClassLibrary
             }
         }
         // DeleteProduct method to add new product to database.
-        public async Task DeleteProduct(int productId)
+        public async Task<int> DeleteProduct(int productId)
         {
             try
-            {
-                List<Stock> stocks = new List<Stock>();
-                stocks = await stockOp.getAllStocksByProduct(productId);
-                sde.Stocks.RemoveRange(stocks);
-                // In order to delete product, first we need to delete stock then we need to delete products
+            {             
                 Product prod = await getProductById(productId);
-                sde.Products.Remove(prod); // deleting a product from product list
-                sde.SaveChanges(); // saving the changes to database
+                if (prod != null)
+                {
+                    sde.Stocks.RemoveRange(prod.Stocks);
+                    await sde.SaveChangesAsync();
+                    // In order to delete product, first we need to delete stock then we need to delete products    
+                    sde.Products.Remove(prod); // deleting a product from product list
+                    sde.SaveChanges(); // saving the changes to database
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch(Exception ex)
             {

@@ -12,6 +12,6 @@ namespace ShopBridgeClassLibrary
         Task<List<Brand>> getAllBrands();
         Task<Brand> getBrandById(int id);
         Task UpdateBrand(int id, Brand brand);
-        Task DeleteBrand(int id);
+        Task<int> DeleteBrand(int id);
     }
 }

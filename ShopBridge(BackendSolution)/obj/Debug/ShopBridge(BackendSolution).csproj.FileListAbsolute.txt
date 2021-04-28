@@ -79,8 +79,6 @@ D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\System.Web.WebPa
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\System.Web.WebPages.dll
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\System.Web.WebPages.Razor.dll
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\WebGrease.dll
-D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\ShopBridgeClassLibrary.pdb
-D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\ShopBridgeClassLibrary.dll.config
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\EntityFramework.xml
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\EntityFramework.SqlServer.xml
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\Microsoft.AspNetCore.Http.Abstractions.xml
@@ -89,6 +87,8 @@ D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\Microsoft.AspNet
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\Microsoft.AspNetCore.Routing.Abstractions.xml
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\Microsoft.Extensions.Primitives.xml
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\Microsoft.Net.Http.Headers.xml
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\ShopBridgeClassLibrary.pdb
+D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\ShopBridgeClassLibrary.dll.config
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\System.Buffers.xml
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\System.Memory.xml
 D:\ShopBridgeAppln(ThinkBridge)\ShopBridge(BackendSolution)\bin\System.Numerics.Vectors.xml

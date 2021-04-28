@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using ShopBridgeClassLibrary;
 
@@ -16,42 +15,52 @@ namespace ShopBridge_BackendSolution_.Controllers
     {
         PackingOperations packOp = new PackingOperations();
         // GET: api/Packing
+        [Route("api/Packing/GetAll")]
         public async Task<HttpResponseMessage> GetAll()
         {
             List<Packing> result = await packOp.getAllPackings();
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
+
         // GET: api/Packing/5
+        [Route("api/Packing/GetPackingById/{Id}")]
         public async Task<HttpResponseMessage> GetPacking(int Id)
         {
-            Packing pack = await packOp.getPackingById(Id);
-            if (pack != null)
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, pack);
+                Packing pack = await packOp.getPackingById(Id);
+                if (pack != null)
+                    return Request.CreateResponse(HttpStatusCode.OK, pack);
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Packing with Id = " + Id.ToString() + " not found");
 
             }
-            else
+            catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Packing with Id = " + Id.ToString() + " not found");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
 
-            // POST: api/Packing
-            public async Task<IHttpActionResult> AddPacking([FromBody] Packing pack)
-            {
+        // POST: api/Packing
+        [Route("api/Packing/AddPacking")]
+        public async Task<HttpResponseMessage> AddPacking([FromBody] Packing pack)
+          {
                 try
                 {
                     await packOp.AddPacking(pack);
-                    return Ok(Request.CreateResponse(HttpStatusCode.Created, pack));
+                    return Request.CreateResponse(HttpStatusCode.Created, pack);
                 }
                 catch (Exception ex)
                 {
-                    return Ok(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message));
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 }
-            }
+          }
 
         // PUT: api/Packing/5
-        public async Task<HttpResponseMessage> Put(int id, Packing pack)
+        [HttpPut]
+
+        [Route("api/Packing/UpdatePacking/{id}")]
+        public async Task<HttpResponseMessage> UpdatePacking(int id, Packing pack)
         {
             try
             {
@@ -75,19 +84,20 @@ namespace ShopBridge_BackendSolution_.Controllers
         }
 
         // DELETE: api/Packing/5
+
+        [Route("api/Packing/DeletePacking/{id}")]
         public async Task<HttpResponseMessage> DeletePacking(int id)
         {
             try
-            {
-                Packing pack = await packOp.getPackingById(id);
-                if (pack == null)
+            {               
+                int response = await packOp.DeletePacking(id);
+                if (response == 0)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Packing with Id = " + id.ToString() + " not found to delete");
                 }
                 else
                 {
-                    await packOp.DeletePacking(id);
-                    return Request.CreateResponse(HttpStatusCode.OK, pack);
+                    return Request.CreateResponse(HttpStatusCode.OK, "Packing with Id = " + id.ToString() + " is deleted");
                 }
             }
             catch (Exception ex)

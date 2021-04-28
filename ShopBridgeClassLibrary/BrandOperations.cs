@@ -32,16 +32,23 @@ namespace ShopBridgeClassLibrary
         }
 
         // this method deletes a brand with matching brand id 
-        public async Task DeleteBrand(int id)
+        public async Task<int> DeleteBrand(int id)
         {
             try
-            {
-                List<Product> productsList = new List<Product>();
-                productsList = await productOp.getAllProductsByBrand(id);
-                sde.Products.RemoveRange(productsList);
+            {       
                 Brand brand = await getBrandById(id);
-                sde.Brands.Remove(brand);
-                sde.SaveChanges();
+                if (brand != null)
+                {
+                    sde.Products.RemoveRange(brand.Products);
+                    await sde.SaveChangesAsync();
+                    sde.Brands.Remove(brand);
+                    sde.SaveChanges();
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (Exception ex)
             {

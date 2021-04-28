@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using ShopBridgeClassLibrary;
 
@@ -15,11 +14,13 @@ namespace ShopBridge_BackendSolution_.Controllers
     {
         StockOperations  stockOp = new StockOperations();
         // GET: api/Stock
+        [Route("api/Stock/GetAll")]
         public async Task<HttpResponseMessage> GetAll()
         {
             List<Stock> stocks = await stockOp.getAllStocks();
             return Request.CreateResponse(HttpStatusCode.OK, stocks);
         }
+        [Route("api/Stock/GetStocksByProductId/{productId}")]
         public async Task<HttpResponseMessage> GetAllStocksByProductId(int productId)
         {
             List<Stock> stocks = await stockOp.getAllStocksByProduct(productId);
@@ -27,21 +28,28 @@ namespace ShopBridge_BackendSolution_.Controllers
         }
 
         // GET: api/Stock/5
-        public async Task<HttpResponseMessage> GetStock(int Id)
+        [Route("api/Stock/GetStockByStockId/{Id}")]
+        public async Task<HttpResponseMessage> GetStockByStockId(int stockId)
         {
-            Stock stock = await stockOp.getStockByStockId(Id);
-            if (stock != null)
+           
+
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, stock);
+                Stock stock = await stockOp.getStockByStockId(stockId);
+                if (stock != null)
+                    return Request.CreateResponse(HttpStatusCode.OK, stock);
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Stock with Id = " + stockId.ToString() + " not found");
 
             }
-            else
+            catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Stock with Id = " + Id.ToString() + " not found");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
 
         // POST: api/Stock
+        [Route("api/Stock/AddStock")]
         public async Task<HttpResponseMessage> AddStock([FromBody] Stock stock)
         {
             try
@@ -56,7 +64,10 @@ namespace ShopBridge_BackendSolution_.Controllers
         }
 
         // PUT: api/Stock/5
-        public async Task<HttpResponseMessage> Put(int stockId, Stock stock)
+        [HttpPut]
+
+        [Route("api/Stock/UpdateStock/{stockId}")]
+        public async Task<HttpResponseMessage> UpdateStock(int stockId, Stock stock)
         {
             try
             {
@@ -80,19 +91,20 @@ namespace ShopBridge_BackendSolution_.Controllers
 
 
         // DELETE: api/Stock/5
+        [Route("api/Stock/DeleteStock/{stockId}")]
         public async Task<HttpResponseMessage> DeleteStock(int stockId)
         {
             try
-            {
-                Stock stock = await stockOp.getStockByStockId(stockId);
-                if (stock == null)
+            {               
+                int response = await stockOp.DeleteStock(stockId);
+                if (response == 0)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Stock with Id = " + stockId.ToString() + " not found to delete");
                 }
                 else
                 {
-                    await stockOp.DeleteStock(stockId);
-                    return Request.CreateResponse(HttpStatusCode.OK, stock);
+
+                    return Request.CreateResponse(HttpStatusCode.OK, "Stock with Id = " + stockId.ToString() + " is deleted");
                 }
             }
             catch (Exception ex)

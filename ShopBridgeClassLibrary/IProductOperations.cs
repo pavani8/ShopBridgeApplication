@@ -12,7 +12,7 @@ namespace ShopBridgeClassLibrary
         Task<List<Product>> getAllProducts();
         Task<Product> getProductById(int id);
         Task UpdateProduct(int id, Product product);
-        Task DeleteProduct(int id);
+        Task<int> DeleteProduct(int id);
         Task<List<Product>> getAllProductsByCategory(int catId);
         Task<List<Product>> getAllProductsByBrand(int brandId);
         Task<List<Product>> getAllProductsBySubCategory(int subCatId);

@@ -12,6 +12,6 @@ namespace ShopBridgeClassLibrary
         Task<List<SubCategory>> getAllSubCategories();
         Task<SubCategory> getSubCategoryById(int id);
         Task UpdateSubCategory(int id, SubCategory subcat);
-        Task DeleteSubCategory(int id);
+        Task<int> DeleteSubCategory(int id);
     }
 }
